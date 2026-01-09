@@ -1,4 +1,4 @@
-!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
@@ -49,21 +49,26 @@
             letter-spacing: 1px;
         }
 
-        .header .subtitle {
-            color: #666;
-            font-size: 0.95em;
-            margin-bottom: 15px;
+        .promo-banner {
+            background-image: linear-gradient(to right, #d4af37, #f3e5ab, #d4af37);
+            padding: 20px;
+            border-radius: 12px;
+            text-align: center;
+            margin: 20px 0;
+            color: #133252;
+            box-shadow: 0 4px 12px rgba(212, 175, 55, 0.3);
         }
 
-        .header .logo {
-            display: inline-block;
-            background: linear-gradient(135deg, var(--color-primary), #0f4f5a);
-            color: white;
-            padding: 10px 20px;
-            border-radius: 20px;
-            font-size: 0.85em;
-            font-weight: bold;
-            margin-bottom: 15px;
+        .promo-banner h2 {
+            margin: 0;
+            font-size: 2.0em;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+        }
+
+        .promo-banner p {
+            margin: 5px 0 0;
+            font-size: 0.9em;
         }
 
         .wheel-section {
@@ -75,8 +80,8 @@
 
         .wheel-container {
             position: relative;
-            width: 320px;
-            height: 320px;
+            width: 280px;
+            height: 280px;
             display: flex;
             align-items: center;
             justify-content: center;
@@ -138,40 +143,6 @@
             cursor: not-allowed;
         }
 
-        .result-box {
-            background: linear-gradient(135deg, #fff9e6, #fffef0);
-            border: 3px solid var(--color-gold);
-            border-radius: 15px;
-            padding: 20px;
-            text-align: center;
-            min-height: 100px;
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            box-shadow: 0 5px 15px rgba(212, 175, 55, 0.2);
-        }
-
-        .result-label {
-            color: var(--color-primary);
-            font-size: 0.9em;
-            font-weight: bold;
-            text-transform: uppercase;
-            letter-spacing: 2px;
-            margin-bottom: 10px;
-        }
-
-        .result-value {
-            color: var(--color-primary);
-            font-size: 1.5em;
-            font-weight: bold;
-            margin-bottom: 8px;
-        }
-
-        .result-sublabel {
-            color: #666;
-            font-size: 0.85em;
-        }
-
         .instructions {
             background: #f0f8ff;
             border-left: 4px solid var(--color-primary);
@@ -217,28 +188,6 @@
             line-height: 1.5;
         }
 
-        .promo-banner {
-            background-image: linear-gradient(to right, #d4af37, #f3e5ab, #d4af37);
-            padding: 20px;
-            border-radius: 12px;
-            text-align: center;
-            margin: 20px 0;
-            color: #133252;
-            box-shadow: 0 4px 12px rgba(212, 175, 55, 0.3);
-        }
-
-        .promo-banner h2 {
-            margin: 0;
-            font-size: 2.0em;
-            text-transform: uppercase;
-            letter-spacing: 2px;
-        }
-
-        .promo-banner p {
-            margin: 5px 0 0;
-            font-size: 0.9em;
-        }
-
         @media (max-width: 768px) {
             .container {
                 padding: 25px;
@@ -259,13 +208,13 @@
             }
         }
 
-        @keyframes pulse {
-            0%, 100% { transform: scale(1); }
-            50% { transform: scale(1.05); }
+        @keyframes glow-pulse {
+            0%, 100% { filter: drop-shadow(0 0 5px rgba(212, 175, 55, 0.5)); }
+            50% { filter: drop-shadow(0 0 20px rgba(212, 175, 55, 1)) drop-shadow(0 0 30px rgba(255, 215, 0, 0.8)); }
         }
 
-        .spin-btn:not(:disabled):hover {
-            animation: pulse 0.6s ease-in-out;
+        canvas.glow {
+            animation: glow-pulse 0.8s ease-in-out infinite;
         }
     </style>
 </head>
@@ -289,12 +238,6 @@
             <div class="button-group">
                 <button class="spin-btn" id="spinBtn">🎡 QUAY NGAY | SPIN NOW</button>
                 <button class="spin-btn" id="resetBtn" style="background: #999;">↺ Lại | Reset</button>
-            </div>
-
-            <div class="result-box">
-                <div class="result-label">🎉 KẾT QUẢ | RESULT</div>
-                <div class="result-value" id="resultText">Nhấn nút để quay | Click to spin</div>
-                <div class="result-sublabel" id="resultSubtext"></div>
             </div>
 
             <div class="instructions">
@@ -322,16 +265,16 @@
 
     <script>
         const prizes = [
-            { name_vi: "✨ Thức ăn vặt", name_en: "✨ Pet snacks", type: "common" },
-            { name_vi: "✨ Thức ăn vặt", name_en: "✨ Pet snacks", type: "common" },
-            { name_vi: "✨ Voucher giảm 30.000đ", name_en: "✨ Voucher discount 30,000đ", type: "common" },
-            { name_vi: "✨ Khăn lau thú cưng chuyên dụng", name_en: "✨ Specialized pet grooming towels", type: "medium" },
-            { name_vi: "✨ Vòng cổ chó/mèo", name_en: "✨ Dog/cat collar", type: "medium" },
-            { name_vi: "✨ Combo vệ sinh ( tai, cắt móng, cạo bàn)", name_en: "✨ FREE services (ear cleaning, nail trimming, paw pad shave) ", type: "premium" },
-            { name_vi: "✨ Combo vệ sinh ( tai, cắt móng, cạo bàn)", name_en: "✨ FREE services (ear cleaning, nail trimming, paw pad shave)", type: "premium" },
-            { name_vi: "✨ Vòng cổ chó/mèo", name_en: "✨ Dog/cat collar", type: "premium" },
-            { name_vi: "✨ Voucher giảm 30.000đ", name_en: "✨ Voucher discount 30,000đ", type: "premium" },
-            { name_vi: "⭐ Đặc biệt: Free Tắm ⭐", name_en: "⭐ SPECIAL PRIZE: FREE Bath service ⭐", type: "jackpot" }
+            { name_vi: "✨ Thức ăn vặt", name_en: "✨ Pet snacks", type: "common" },           // 0
+            { name_vi: "✨ Thức ăn vặt", name_en: "✨ Pet snacks", type: "common" },           // 1
+            { name_vi: "✨ Voucher 30K", name_en: "✨ Voucher 30K", type: "common" },          // 2
+            { name_vi: "✨ Khăn lau thú", name_en: "✨ Pet towels", type: "medium" },         // 3
+            { name_vi: "✨ Vòng cổ", name_en: "✨ Pet collar", type: "medium" },              // 4
+            { name_vi: "✨ Vệ sinh tai", name_en: "✨ Ear cleaning", type: "premium" },       // 5
+            { name_vi: "✨ Cắt móng", name_en: "✨ Nail trim", type: "premium" },             // 6
+            { name_vi: "✨ Cạo bàn", name_en: "✨ Paw shave", type: "premium" },              // 7
+            { name_vi: "✨ Voucher 30K", name_en: "✨ Voucher 30K", type: "premium" },        // 8
+            { name_vi: "⭐ FREE Tắm ⭐", name_en: "⭐ FREE Bath ⭐", type: "jackpot" }         // 9
         ];
 
         const colors = [
@@ -346,28 +289,25 @@
         let ctx = canvas.getContext("2d");
         let spinBtn = document.getElementById("spinBtn");
         let resetBtn = document.getElementById("resetBtn");
-        let resultText = document.getElementById("resultText");
-        let resultSubtext = document.getElementById("resultSubtext");
 
         let wheelSpinning = false;
-        let wheelRotation = 0;
-        let spinArcStart = 0;
-        let spinTime = 0;
-        let spinTimeTotal = 0;
-        let selectedPrizeIndex = -1;
-        let spinTargetAngle = 0;
+        let currentRotation = 0;
+        let winningIndex = -1;
+        let glowActive = false;
 
         canvas.width = 400;
         canvas.height = 400;
 
+        const SEGMENTS = 10;
+        const SEGMENT_ANGLE = 360 / SEGMENTS; // 36 degrees
+        const POINTER_ANGLE = 90; // Pointer at top
+
         function drawWheel() {
-            let numSegments = prizes.length;
-            let segmentAngle = 360 / numSegments;
+            for (let i = 0; i < SEGMENTS; i++) {
+                let startAngle = (i * SEGMENT_ANGLE - 90) * Math.PI / 180;
+                let endAngle = ((i + 1) * SEGMENT_ANGLE - 90) * Math.PI / 180;
 
-            for (let i = 0; i < numSegments; i++) {
-                let startAngle = (i * segmentAngle - 90) * Math.PI / 180;
-                let endAngle = ((i + 1) * segmentAngle - 90) * Math.PI / 180;
-
+                // Draw segment
                 ctx.beginPath();
                 ctx.moveTo(200, 200);
                 ctx.arc(200, 200, 180, startAngle, endAngle);
@@ -378,24 +318,21 @@
                 ctx.lineWidth = 3;
                 ctx.stroke();
 
-                // Draw text - centered and readable
+                // Draw text
                 ctx.save();
                 ctx.translate(200, 200);
                 ctx.rotate((startAngle + endAngle) / 2);
                 ctx.textAlign = "right";
                 ctx.textBaseline = "middle";
                 ctx.fillStyle = darkColors[i];
-                ctx.font = "bold 13px Arial";
+                ctx.font = "bold 12px Arial";
                 
-                let textRadius = 180;
-                let textX = textRadius;
-                // Shorten text for wheel display
                 let displayText = prizes[i].name_vi.length > 14 ? prizes[i].name_vi.substring(0, 14) : prizes[i].name_vi;
-                ctx.fillText(displayText, textX, 0);
+                ctx.fillText(displayText, 120, 0);
                 ctx.restore();                
             }
 
-            // Draw center circle
+            // Center circle
             ctx.beginPath();
             ctx.arc(200, 200, 25, 0, Math.PI * 2);
             ctx.fillStyle = "#218091";
@@ -405,7 +342,7 @@
             ctx.stroke();
             
             ctx.fillStyle = "#d4af37";
-            ctx.font = "bold 20px Arial";
+            ctx.font = "bold 16px Arial";
             ctx.textAlign = "center";
             ctx.textBaseline = "middle";
             ctx.fillText("🎁", 200, 200);
@@ -421,93 +358,82 @@
             ctx.restore();
         }
 
+        function getWinningIndex() {
+            let normalizedRotation = ((currentRotation % 360) + 360) % 360;
+            let pointerOffsetFromSector0 = (POINTER_ANGLE - normalizedRotation + 360) % 360;
+            let index = Math.floor(pointerOffsetFromSector0 / SEGMENT_ANGLE) % SEGMENTS;
+            return index;
+        }
+
         function spinWheel() {
             if (wheelSpinning) return;
             wheelSpinning = true;
             spinBtn.disabled = true;
-            spinBtn.textContent = "⏳ Đang quay... | Spinning...";
+            spinBtn.textContent = "⏳ Đang quay...";
+            canvas.classList.remove("glow");
+            glowActive = false;
 
-            // 完全隨機選擇獎品 (0-9)
-            selectedPrizeIndex = Math.floor(Math.random() * prizes.length);
+            // 随机选择要赢的奖品
+            let selectedIndex = Math.floor(Math.random() * SEGMENTS);
 
-            spinTime = 0;
-            spinTimeTotal = 3000;  // 3秒轉動
-            
-            // 計算指針應停的位置
-            // 指針在上方 (12點鐘方向 = 90度)
-            let segmentAngle = 360 / prizes.length;  // 36度/格
-            let targetDegree = 90 - (selectedPrizeIndex * segmentAngle);
-            
-            // 確保角度在0-360範圍內
-            while (targetDegree < 0) targetDegree += 360;
-            while (targetDegree >= 360) targetDegree -= 360;
-            
-            spinArcStart = Math.random() * 360;
-            spinTargetAngle = spinArcStart + 3600 + targetDegree;  // 10圈 + 目標位置
-            
-            wheelRotation = 0;
-            resultText.textContent = "🎲 Đang quay... | Spinning...";
-            resultSubtext.textContent = "";
+            // 计算目标角度
+            let targetAngle = POINTER_ANGLE - (selectedIndex * SEGMENT_ANGLE);
+            while (targetAngle < 0) targetAngle += 360;
+            while (targetAngle >= 360) targetAngle -= 360;
 
-            rotateWheel(spinArcStart);
-            spinAnimation();
-        }
+            // 添加多圈旋转
+            let spinDegrees = 10 * 360 + targetAngle;
 
-        function spinAnimation() {
-            spinTime += 16;  // 60fps動畫
+            // 动画
+            let startTime = Date.now();
+            let duration = 3000;
+            let startRotation = currentRotation;
 
-            if (spinTime >= spinTimeTotal) {
-                stopAnimation();
-                return;
+            function animate() {
+                let elapsed = Date.now() - startTime;
+                let progress = Math.min(elapsed / duration, 1);
+                let easeProgress = 1 - Math.pow(1 - progress, 3);
+                
+                currentRotation = startRotation + spinDegrees * easeProgress;
+                rotateWheel(currentRotation);
+
+                if (progress < 1) {
+                    requestAnimationFrame(animate);
+                } else {
+                    completeSpinning();
+                }
             }
 
-            let progress = spinTime / spinTimeTotal;
-            let easeProgress = 1 - Math.pow(1 - progress, 3);  // easeOut cubic
-            let spinAngle = spinArcStart + (spinTargetAngle - spinArcStart) * easeProgress;
-            wheelRotation = spinAngle % 360;
-            rotateWheel(wheelRotation);
-            requestAnimationFrame(spinAnimation);
+            animate();
         }
 
-        function stopAnimation() {
+        function completeSpinning() {
             wheelSpinning = false;
             spinBtn.disabled = false;
             spinBtn.textContent = "🎡 QUAY NGAY | SPIN NOW";
 
-            // 根據最終旋轉角度計算指針指向的獎品
-            let normalizedRotation = (wheelRotation % 360 + 360) % 360;
-            let segmentAngle = 360 / prizes.length;
-            
-            // 指針在上方 (90度)，計算指針對應的格子
-            let pointerIndex = Math.round((90 - normalizedRotation + 360) / segmentAngle) % prizes.length;
-            if (pointerIndex < 0) pointerIndex += prizes.length;
-            
-            // 使用計算出的獎品索引（確保與指針對齐）
-            let index = pointerIndex;
+            // 获取中奖索引
+            winningIndex = getWinningIndex();
 
-            resultText.innerHTML = `<span style="font-size: 1.2em; color: #d4af37;">🎉 YÊU!</span><br>${prizes[index].name_vi}<br><small>${prizes[index].name_en}</small>`;
-            resultSubtext.innerHTML = `<small>Xin chúc mừng! | Congratulations!</small>`;
-
-            setTimeout(() => {
-                resultText.style.animation = "none";
-                resultText.offsetHeight;
-                resultText.style.animation = "pulse 0.6s ease-in-out";
-            }, 10);
+            // 添加发光效果
+            canvas.classList.add("glow");
+            glowActive = true;
         }
 
         resetBtn.addEventListener("click", () => {
-            wheelRotation = 0;
+            currentRotation = 0;
             wheelSpinning = false;
             spinBtn.disabled = false;
             spinBtn.textContent = "🎡 QUAY NGAY | SPIN NOW";
-            resultText.textContent = "Nhấn nút để quay | Click to spin";
-            resultSubtext.textContent = "";
+            canvas.classList.remove("glow");
+            glowActive = false;
             rotateWheel(0);
         });
 
         spinBtn.addEventListener("click", spinWheel);
 
-        drawWheel();
+        // 初始绘制
+        rotateWheel(0);
     </script>
 </body>
 </html>
