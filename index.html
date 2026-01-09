@@ -101,10 +101,18 @@
             filter: drop-shadow(0 3px 5px rgba(0, 0, 0, 0.3));
         }
 
+        .pointer.glow-pointer {
+            animation: pointer-soft-glow 1.5s ease-in-out infinite;
+        }
+
         canvas#wheelCanvas {
             width: 100%;
             height: 100%;
             filter: drop-shadow(0 10px 30px rgba(0, 0, 0, 0.15));
+        }
+
+        canvas#wheelCanvas.glow-wheel {
+            animation: wheel-soft-glow 1.5s ease-in-out infinite;
         }
 
         .button-group {
@@ -208,13 +216,14 @@
             }
         }
 
-        @keyframes glow-pulse {
-            0%, 100% { filter: drop-shadow(0 0 5px rgba(212, 175, 55, 0.5)); }
-            50% { filter: drop-shadow(0 0 20px rgba(212, 175, 55, 1)) drop-shadow(0 0 30px rgba(255, 215, 0, 0.8)); }
+        @keyframes pointer-soft-glow {
+            0%, 100% { filter: drop-shadow(0 0 3px rgba(212, 175, 55, 0.6)) drop-shadow(0 3px 5px rgba(0, 0, 0, 0.3)); }
+            50% { filter: drop-shadow(0 0 10px rgba(212, 175, 55, 0.8)) drop-shadow(0 3px 5px rgba(0, 0, 0, 0.3)); }
         }
 
-        canvas.glow {
-            animation: glow-pulse 0.8s ease-in-out infinite;
+        @keyframes wheel-soft-glow {
+            0%, 100% { filter: drop-shadow(0 10px 30px rgba(0, 0, 0, 0.15)) drop-shadow(0 0 5px rgba(212, 175, 55, 0.3)); }
+            50% { filter: drop-shadow(0 10px 30px rgba(0, 0, 0, 0.15)) drop-shadow(0 0 20px rgba(212, 175, 55, 0.6)); }
         }
     </style>
 </head>
@@ -231,7 +240,7 @@
 
         <div class="wheel-section">
             <div class="wheel-container">
-                <div class="pointer"></div>
+                <div class="pointer" id="pointer"></div>
                 <canvas id="wheelCanvas"></canvas>
             </div>
 
@@ -265,35 +274,41 @@
 
     <script>
         const prizes = [
-            { name_vi: "✨ Thức ăn vặt", name_en: "✨ Pet snacks", type: "common" },           // 0
-            { name_vi: "✨ Thức ăn vặt", name_en: "✨ Pet snacks", type: "common" },           // 1
-            { name_vi: "✨ Voucher 30K", name_en: "✨ Voucher 30K", type: "common" },          // 2
-            { name_vi: "✨ Khăn lau thú", name_en: "✨ Pet towels", type: "medium" },         // 3
-            { name_vi: "✨ Vòng cổ", name_en: "✨ Pet collar", type: "medium" },              // 4
-            { name_vi: "✨ Vệ sinh tai", name_en: "✨ Ear cleaning", type: "premium" },       // 5
-            { name_vi: "✨ Cắt móng", name_en: "✨ Nail trim", type: "premium" },             // 6
-            { name_vi: "✨ Cạo bàn", name_en: "✨ Paw shave", type: "premium" },              // 7
-            { name_vi: "✨ Voucher 30K", name_en: "✨ Voucher 30K", type: "premium" },        // 8
-            { name_vi: "⭐ FREE Tắm ⭐", name_en: "⭐ FREE Bath ⭐", type: "jackpot" }         // 9
+            { name_vi: "✨ Thức ăn vặt", name_en: "✨ Pet snacks", type: "common" },
+            { name_vi: "✨ Thức ăn vặt", name_en: "✨ Pet snacks", type: "common" },
+            { name_vi: "✨ Voucher giảm 30.000đ", name_en: "✨ Voucher 30K", type: "common" },
+            { name_vi: "✨ Voucher giảm 30.000đ", name_en: "✨ Pet towels", type: "medium" },
+            { name_vi: "✨ Khăn lau thú cưng chuyên dụng", name_en: "✨ Pet collar", type: "medium" },
+            { name_vi: "✨ Khăn lau thú cưng chuyên dụng", name_en: "✨ Ear cleaning", type: "premium" },
+            { name_vi: "✨ Vòng cổ chó/mèo", name_en: "✨ Nail trim", type: "premium" },
+            { name_vi: "✨ Vòng cổ chó/mèo", name_en: "✨ Paw shave", type: "premium" },
+            { name_vi: "✨ Combo vệ sinh", name_en: "✨ Voucher 30K", type: "premium" },
+            { name_vi: "⭐ Free Tắm ⭐", name_en: "⭐ FREE Bath ⭐", type: "jackpot" }
         ];
 
+        // 格子顏色：0-3淺藍, 4-7淡粉紅, 8金色, 9淡黃色
         const colors = [
-            "#FFE4B5", "#FFD700", "#FFF8DC", "#FFFACD", "#E6F3FF", "#E6F3FF", "#E6F3FF", "#E6F3FF", "#E6F3FF", "#FFDAB9"
+            "#ADD8E6", "#ADD8E6", "#ADD8E6", "#ADD8E6",  // 0-3: 淺藍色
+            "#FFB6C1", "#FFB6C1", "#FFB6C1", "#FFB6C1",  // 4-7: 淡粉紅色
+            "#FFD700",  // 8: 金色
+            "#FFFFE0"  // 9: 淡黃色
         ];
 
         const darkColors = [
-            "#218091", "#0f4f5a", "#218091", "#0f4f5a", "#218091", "#0f4f5a", "#218091", "#0f4f5a", "#0f4f5a", "#d4af37"
+            "#218091", "#218091", "#218091", "#218091",  // 0-3: 深藍色
+            "#C71585", "#C71585", "#C71585", "#C71585",  // 4-7: 深粉紅色
+            "#8B6914",  // 8: 深金色
+            "#DAA520"  // 9: 深黃色
         ];
 
         let canvas = document.getElementById("wheelCanvas");
         let ctx = canvas.getContext("2d");
         let spinBtn = document.getElementById("spinBtn");
         let resetBtn = document.getElementById("resetBtn");
+        let pointerElement = document.getElementById("pointer");
 
         let wheelSpinning = false;
         let currentRotation = 0;
-        let winningIndex = -1;
-        let glowActive = false;
 
         canvas.width = 400;
         canvas.height = 400;
@@ -301,18 +316,30 @@
         const SEGMENTS = 10;
         const SEGMENT_ANGLE = 360 / SEGMENTS; // 36 degrees
         const POINTER_ANGLE = 90; // Pointer at top
+        const SPIN_ROTATIONS = 10; // 每次轉 10 圈
+
+        // 加權機率選擇函數
+        function selectPrizeByWeight() {
+            let random = Math.random() * 100;
+            if (random < 5) {
+                return 9; // 5% 機率中特獎
+            } else {
+                return Math.floor(Math.random() * 9);
+            }
+        }
 
         function drawWheel() {
             for (let i = 0; i < SEGMENTS; i++) {
                 let startAngle = (i * SEGMENT_ANGLE - 90) * Math.PI / 180;
                 let endAngle = ((i + 1) * SEGMENT_ANGLE - 90) * Math.PI / 180;
 
-                // Draw segment
                 ctx.beginPath();
                 ctx.moveTo(200, 200);
                 ctx.arc(200, 200, 180, startAngle, endAngle);
                 ctx.closePath();
+                
                 ctx.fillStyle = colors[i];
+                
                 ctx.fill();
                 ctx.strokeStyle = darkColors[i];
                 ctx.lineWidth = 3;
@@ -358,31 +385,40 @@
             ctx.restore();
         }
 
-        function getWinningIndex() {
-            let normalizedRotation = ((currentRotation % 360) + 360) % 360;
-            let pointerOffsetFromSector0 = (POINTER_ANGLE - normalizedRotation + 360) % 360;
-            let index = Math.floor(pointerOffsetFromSector0 / SEGMENT_ANGLE) % SEGMENTS;
-            return index;
+        function autoReset() {
+            pointerElement.classList.remove("glow-pointer");
+            canvas.classList.remove("glow-wheel");
         }
 
         function spinWheel() {
             if (wheelSpinning) return;
+            
+            // 無Reset自動重置
+            autoReset();
+            
             wheelSpinning = true;
             spinBtn.disabled = true;
             spinBtn.textContent = "⏳ Đang quay...";
-            canvas.classList.remove("glow");
-            glowActive = false;
 
-            // 随机选择要赢的奖品
-            let selectedIndex = Math.floor(Math.random() * SEGMENTS);
+            // 使用加权机率选择奖品
+            let selectedIndex = selectPrizeByWeight();
 
-            // 计算目标角度
-            let targetAngle = POINTER_ANGLE - (selectedIndex * SEGMENT_ANGLE);
-            while (targetAngle < 0) targetAngle += 360;
-            while (targetAngle >= 360) targetAngle -= 360;
+            // 計算轉到讓指針指向該格子中心的角度
+            let centerAngle = selectedIndex * SEGMENT_ANGLE;
+            let targetRotation = POINTER_ANGLE - centerAngle;
+            
+            // 規範化到 0-360
+            while (targetRotation < 0) targetRotation += 360;
+            while (targetRotation >= 360) targetRotation -= 360;
 
-            // 添加多圈旋转
-            let spinDegrees = 10 * 360 + targetAngle;
+            // 每次都轉 10 圈，從目前位置計算
+            let currentNormalized = ((currentRotation % 360) + 360) % 360;
+            let rotationDistance = SPIN_ROTATIONS * 360 + (targetRotation - currentNormalized);
+            
+            // 確保距離是正數
+            if (rotationDistance <= 0) {
+                rotationDistance += 360;
+            }
 
             // 动画
             let startTime = Date.now();
@@ -392,9 +428,9 @@
             function animate() {
                 let elapsed = Date.now() - startTime;
                 let progress = Math.min(elapsed / duration, 1);
-                let easeProgress = 1 - Math.pow(1 - progress, 3);
+                let easeProgress = 1 - Math.pow(1 - progress, 3); // easeOut cubic
                 
-                currentRotation = startRotation + spinDegrees * easeProgress;
+                currentRotation = startRotation + rotationDistance * easeProgress;
                 rotateWheel(currentRotation);
 
                 if (progress < 1) {
@@ -412,12 +448,12 @@
             spinBtn.disabled = false;
             spinBtn.textContent = "🎡 QUAY NGAY | SPIN NOW";
 
-            // 获取中奖索引
-            winningIndex = getWinningIndex();
-
-            // 添加发光效果
-            canvas.classList.add("glow");
-            glowActive = true;
+            // 绘制轮盘
+            rotateWheel(currentRotation);
+            
+            // 指針 + 輪盤都發光
+            pointerElement.classList.add("glow-pointer");
+            canvas.classList.add("glow-wheel");
         }
 
         resetBtn.addEventListener("click", () => {
@@ -425,8 +461,8 @@
             wheelSpinning = false;
             spinBtn.disabled = false;
             spinBtn.textContent = "🎡 QUAY NGAY | SPIN NOW";
-            canvas.classList.remove("glow");
-            glowActive = false;
+            pointerElement.classList.remove("glow-pointer");
+            canvas.classList.remove("glow-wheel");
             rotateWheel(0);
         });
 
