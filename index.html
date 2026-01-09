@@ -1,8 +1,8 @@
-<!DOCTYPE html>
+!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no, maximum-scale=1.0">
     <title>Bom Elite - Vòng Quay May Mắn</title>
     <style>
         :root {
@@ -20,7 +20,7 @@
 
         body {
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            background: linear-gradient(135deg, var(--color-primary) 0%, #0f4f5a 100%);
+            background: linear-gradient(135deg, #d8a8d8 0%, #e8c8e8 100%);
             min-height: 100vh;
             display: flex;
             align-items: center;
@@ -217,6 +217,28 @@
             line-height: 1.5;
         }
 
+        .promo-banner {
+            background-image: linear-gradient(to right, #d4af37, #f3e5ab, #d4af37);
+            padding: 20px;
+            border-radius: 12px;
+            text-align: center;
+            margin: 20px 0;
+            color: #133252;
+            box-shadow: 0 4px 12px rgba(212, 175, 55, 0.3);
+        }
+
+        .promo-banner h2 {
+            margin: 0;
+            font-size: 2.0em;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+        }
+
+        .promo-banner p {
+            margin: 5px 0 0;
+            font-size: 0.9em;
+        }
+
         @media (max-width: 768px) {
             .container {
                 padding: 25px;
@@ -250,37 +272,13 @@
 <body>
     <div class="container">
         <div class="header">
-             <style>
-    .promo-banner {
-        background: linear-gradient(90deg, #fdfbfb 0%, #ebedee 100%); /* 或用你的金色系 */
-        background-image: linear-gradient(to right, #d4af37, #f3e5ab, #d4af37);
-        padding: 20px;
-        border-radius: 12px;
-        text-align: center;
-        margin: 20px 0;
-        color: #133252;
-        box-shadow: 0 4px 12px rgba(212, 175, 55, 0.3);
-    }
-    .promo-banner h2 {
-        margin: 0;
-        font-size: 2.0em;
-        text-transform: uppercase;
-        letter-spacing: 2px;
-    } 
-
-    }
-    .promo-banner p {
-        margin: 5px 0 0;
-        font-size: 0.9em;
-    }
-</style>
-
-<div class="promo-banner">
-    <h2>🐾 Bom Elite Pet Luxury Grooming 🐾</h2>
-<h1>VÒNG QUAY MAY MẮN</h1>
-            <h1 style="font-size: 1.2em; color: #666; margin-top: -5px;">🎉 Grand Opening Special 🎉 </h1>
-    <p>Spin to Win Premium Grooming Services!</p>
-</div>
+            <div class="promo-banner">
+                <h2>🐾 Bom Elite Pet Luxury Grooming 🐾</h2>
+                <h1>VÒNG QUAY MAY MẮN</h1>
+                <h1 style="font-size: 1.2em; color: #666; margin-top: -5px;">🎉 Grand Opening Special 🎉 </h1>
+                <p>Spin to Win Premium Grooming Services!</p>
+            </div>
+        </div>
 
         <div class="wheel-section">
             <div class="wheel-container">
@@ -317,8 +315,7 @@
                 • Không áp dụng kết hợp với các chương trình khác | Cannot be combined with other promotions<br>
                 • Dịch vụ tắm rửa miễn phí: chỉ áp dụng cho thú cưng dưới 10kg, trên 10kg giảm 50% giá | Free bath service: only for pets under 10kg; over 10kg get 50% OFF<br>
                 • Chi tiết đầy đủ xin hỏi nhân viên tại cửa hàng | Full details available from store staff<br>
-                • ĐỊA CHỈ: 20 Nguyễn Thị Thập, Tân Thuận , HCM ( 20 Nguyễn Thị Thập , Bình Thuận , Q7 cũ ) | Liên hệ |Zalo：📞0965 889 949  | Email: enquiry@bomelitepet.com
-		(*Vietnamese version prevails)
+                • ĐỊA CHỈ: 20 Nguyễn Thị Thập, Tân Thuận , HCM ( 20 Nguyễn Thị Thập , Bình Thuận , Q7 cũ ) | Liên hệ |Zalo：📞0965 889 949  | Email: enquiry@bomelitepet.com (*Vietnamese version prevails)
             </div>
         </div>
     </div>
@@ -330,14 +327,12 @@
             { name_vi: "✨ Voucher giảm 30.000đ", name_en: "✨ Voucher discount 30,000đ", type: "common" },
             { name_vi: "✨ Khăn lau thú cưng chuyên dụng", name_en: "✨ Specialized pet grooming towels", type: "medium" },
             { name_vi: "✨ Vòng cổ chó/mèo", name_en: "✨ Dog/cat collar", type: "medium" },
-            { name_vi: "✨ Combo vệ sinh (tai)", name_en: "✨ FREE services (ear cleaning)", type: "premium" },
-            { name_vi: "✨ Combo vệ sinh (cắt móng)", name_en: "✨ FREE services (nail trimming)", type: "premium" },
-            { name_vi: "✨ Combo vệ sinh (cạo bàn)", name_en: "✨ FREE services (paw pad shave)", type: "premium" },
+            { name_vi: "✨ Combo vệ sinh ( tai, cắt móng, cạo bàn)", name_en: "✨ FREE services (ear cleaning, nail trimming, paw pad shave) ", type: "premium" },
+            { name_vi: "✨ Combo vệ sinh ( tai, cắt móng, cạo bàn)", name_en: "✨ FREE services (ear cleaning, nail trimming, paw pad shave)", type: "premium" },
+            { name_vi: "✨ Vòng cổ chó/mèo", name_en: "✨ Dog/cat collar", type: "premium" },
             { name_vi: "✨ Voucher giảm 30.000đ", name_en: "✨ Voucher discount 30,000đ", type: "premium" },
-            { name_vi: "⭐ Đặt biệt: Free Tắm ⭐", name_en: "⭐ SPECIAL PRIZE: FREE Bath service ⭐", type: "jackpot" }
+            { name_vi: "⭐ Đặc biệt: Free Tắm ⭐", name_en: "⭐ SPECIAL PRIZE: FREE Bath service ⭐", type: "jackpot" }
         ];
-
-
 
         const colors = [
             "#FFE4B5", "#FFD700", "#FFF8DC", "#FFFACD", "#E6F3FF", "#E6F3FF", "#E6F3FF", "#E6F3FF", "#E6F3FF", "#FFDAB9"
@@ -360,7 +355,7 @@
         let spinTime = 0;
         let spinTimeTotal = 0;
         let selectedPrizeIndex = -1;
-	let spinTargetAngle = 0;
+        let spinTargetAngle = 0;
 
         canvas.width = 400;
         canvas.height = 400;
@@ -383,9 +378,37 @@
                 ctx.lineWidth = 3;
                 ctx.stroke();
 
-                // Draw text - CENTERED in each segment (Vietnamese 0px, English 0px)
+                // Draw text - centered and readable
+                ctx.save();
+                ctx.translate(200, 200);
+                ctx.rotate((startAngle + endAngle) / 2);
+                ctx.textAlign = "right";
+                ctx.textBaseline = "middle";
+                ctx.fillStyle = darkColors[i];
+                ctx.font = "bold 13px Arial";
                 
+                let textRadius = 120;
+                let textX = textRadius;
+                // Shorten text for wheel display
+                let displayText = prizes[i].name_vi.length > 14 ? prizes[i].name_vi.substring(0, 14) : prizes[i].name_vi;
+                ctx.fillText(displayText, textX, 0);
+                ctx.restore();                
             }
+
+            // Draw center circle
+            ctx.beginPath();
+            ctx.arc(200, 200, 25, 0, Math.PI * 2);
+            ctx.fillStyle = "#218091";
+            ctx.fill();
+            ctx.strokeStyle = "#d4af37";
+            ctx.lineWidth = 3;
+            ctx.stroke();
+            
+            ctx.fillStyle = "#d4af37";
+            ctx.font = "bold 16px Arial";
+            ctx.textAlign = "center";
+            ctx.textBaseline = "middle";
+            ctx.fillText("🎁", 200, 200);
         }
 
         function rotateWheel(angle) {
@@ -398,80 +421,71 @@
             ctx.restore();
         }
 
-        function getWeightedPrizeIndex() {
-            // Updated prize weights:
-            // 0-1: Pet Snack (40% = 0.20 each)
-            // 2: Bath Voucher 30k (15%)
-            // 3: Pet Towel (7%)
-            // 4: Pet Collar (8%)
-            // 5-7: Free Services (25% = ~8.3% each)
-            // 8: Hotel 30% (5%)
-            // 9: Free Bath 11-step (5%)
+        function spinWheel() {
+            if (wheelSpinning) return;
+            wheelSpinning = true;
+            spinBtn.disabled = true;
+            spinBtn.textContent = "⏳ Đang quay... | Spinning...";
+
+            // 完全隨機選擇獎品 (0-9)
+            selectedPrizeIndex = Math.floor(Math.random() * prizes.length);
+
+            spinTime = 0;
+            spinTimeTotal = 3000;  // 3秒轉動
             
-            const weights = [0.20, 0.20, 0.15, 0.07, 0.08, 0.08, 0.08, 0.09, 0.05, 0.05];
-            const random = Math.random();
-            let cumulative = 0;
+            // 計算指針應停的位置
+            // 指針在上方 (12點鐘方向 = 90度)
+            let segmentAngle = 360 / prizes.length;  // 36度/格
+            let targetDegree = 90 - (selectedPrizeIndex * segmentAngle);
             
-            for (let i = 0; i < weights.length; i++) {
-                cumulative += weights[i];
-                if (random <= cumulative) {
-                    return i;
-                }
-            }
-            return 9;
+            // 確保角度在0-360範圍內
+            while (targetDegree < 0) targetDegree += 360;
+            while (targetDegree >= 360) targetDegree -= 360;
+            
+            spinArcStart = Math.random() * 360;
+            spinTargetAngle = spinArcStart + 3600 + targetDegree;  // 10圈 + 目標位置
+            
+            wheelRotation = 0;
+            resultText.textContent = "🎲 Đang quay... | Spinning...";
+            resultSubtext.textContent = "";
+
+            rotateWheel(spinArcStart);
+            spinAnimation();
         }
 
-function spinWheel() {
-    if (wheelSpinning) return;
-    wheelSpinning = true;
-    spinBtn.disabled = true;
-    spinBtn.textContent = "⏳ Đang quay... | Spinning...";
+        function spinAnimation() {
+            spinTime += 16;  // 60fps動畫
 
-    // Get weighted random prize before spinning starts
-    selectedPrizeIndex = getWeightedPrizeIndex();
+            if (spinTime >= spinTimeTotal) {
+                stopAnimation();
+                return;
+            }
 
-    spinTime = 0;
-    spinTimeTotal = 3000;  // 3 seconds for 10+ spins
-    
-    // 計算指針要停的位置（指針在上方，對應格9）
-    let segmentAngle = 360 / prizes.length;  // 36 degrees per segment
-    let targetDegree = 90 - (selectedPrizeIndex * segmentAngle);
-    while (targetDegree < 0) targetDegree += 360;
-    
-    spinArcStart = Math.random() * 360;
-    spinTargetAngle = spinArcStart + 3600 + targetDegree;  // 10 full rotations + target
-    
-    wheelRotation = 0;
-    resultText.textContent = "🎲 Đang quay... | Spinning...";
-    resultSubtext.textContent = "";
+            let progress = spinTime / spinTimeTotal;
+            let easeProgress = 1 - Math.pow(1 - progress, 3);  // easeOut cubic
+            let spinAngle = spinArcStart + (spinTargetAngle - spinArcStart) * easeProgress;
+            wheelRotation = spinAngle % 360;
+            rotateWheel(wheelRotation);
+            requestAnimationFrame(spinAnimation);
+        }
 
-    rotateWheel(spinArcStart);
-    spinAnimation();
-}
-function spinAnimation() {
-    spinTime += 16;  // Smooth 60fps animation
-
-    if (spinTime >= spinTimeTotal) {
-        stopAnimation();
-        return;
-    }
-
-    let progress = spinTime / spinTimeTotal;
-    let easeProgress = progress * progress;  // Deceleration effect
-    let spinAngle = spinArcStart + (spinTargetAngle - spinArcStart) * easeProgress;
-    wheelRotation = spinAngle % 360;
-    rotateWheel(wheelRotation);
-    setTimeout(spinAnimation, 16);
-}
         function stopAnimation() {
             wheelSpinning = false;
             spinBtn.disabled = false;
             spinBtn.textContent = "🎡 QUAY NGAY | SPIN NOW";
 
-            // Use pre-selected prize
-            let index = selectedPrizeIndex;
+            // 根據最終旋轉角度計算指針指向的獎品
+            let normalizedRotation = (wheelRotation % 360 + 360) % 360;
+            let segmentAngle = 360 / prizes.length;
+            
+            // 指針在上方 (90度)，計算指針對應的格子
+            let pointerIndex = Math.round((90 - normalizedRotation + 360) / segmentAngle) % prizes.length;
+            if (pointerIndex < 0) pointerIndex += prizes.length;
+            
+            // 使用計算出的獎品索引（確保與指針對齐）
+            let index = pointerIndex;
 
-            resultText.innerHTML = `<span style="font-size: 1.2em; color: #d4af37;">🎉 YÊU!</span><br>${prizes[index].name_vi}<br>${prizes[index].name_en}`;
+            resultText.innerHTML = `<span style="font-size: 1.2em; color: #d4af37;">🎉 YÊU!</span><br>${prizes[index].name_vi}<br><small>${prizes[index].name_en}</small>`;
             resultSubtext.innerHTML = `<small>Xin chúc mừng! | Congratulations!</small>`;
 
             setTimeout(() => {
