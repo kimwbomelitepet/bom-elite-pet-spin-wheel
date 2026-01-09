@@ -384,18 +384,7 @@
                 ctx.stroke();
 
                 // Draw text - CENTERED in each segment (Vietnamese 0px, English 0px)
-                ctx.save();
-                ctx.translate(200, 200);
-                ctx.rotate((startAngle + endAngle) / 2);
-                ctx.textAlign = "center";
-                ctx.textBaseline = "middle";
-                ctx.fillStyle = darkColors[i];
-                ctx.font = "bold 0px uppercase";
                 
-                let textRadius = 115;
-                let textX = textRadius;
-                ctx.fillText(prizes[i].name_vi.substring(0, 22), textX, 0);
-                ctx.restore();
             }
         }
 
