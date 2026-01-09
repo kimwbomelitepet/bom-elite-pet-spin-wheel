@@ -387,7 +387,7 @@
                 ctx.fillStyle = darkColors[i];
                 ctx.font = "bold 13px Arial";
                 
-                let textRadius = 120;
+                let textRadius = 0;
                 let textX = textRadius;
                 // Shorten text for wheel display
                 let displayText = prizes[i].name_vi.length > 14 ? prizes[i].name_vi.substring(0, 14) : prizes[i].name_vi;
@@ -405,7 +405,7 @@
             ctx.stroke();
             
             ctx.fillStyle = "#d4af37";
-            ctx.font = "bold 16px Arial";
+            ctx.font = "bold 20px Arial";
             ctx.textAlign = "center";
             ctx.textBaseline = "middle";
             ctx.fillText("🎁", 200, 200);
