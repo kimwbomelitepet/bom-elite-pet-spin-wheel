@@ -1,0 +1,510 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Bom Elite - Vòng Quay May Mắn</title>
+    <style>
+        :root {
+            --color-primary: #218091;
+            --color-gold: #d4af37;
+            --color-bg: #f5f5f5;
+            --color-text: #133252;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, var(--color-primary) 0%, #0f4f5a 100%);
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+        }
+
+        .container {
+            background: white;
+            border-radius: 20px;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+            padding: 40px;
+            max-width: 900px;
+            width: 100%;
+        }
+
+        .header {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+
+        .header h1 {
+            color: var(--color-primary);
+            font-size: 1.8em;
+            margin-bottom: 10px;
+            letter-spacing: 1px;
+        }
+
+        .header .subtitle {
+            color: #666;
+            font-size: 0.95em;
+            margin-bottom: 15px;
+        }
+
+        .header .logo {
+            display: inline-block;
+            background: linear-gradient(135deg, var(--color-primary), #0f4f5a);
+            color: white;
+            padding: 10px 20px;
+            border-radius: 20px;
+            font-size: 0.85em;
+            font-weight: bold;
+            margin-bottom: 15px;
+        }
+
+        .wheel-section {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 25px;
+        }
+
+        .wheel-container {
+            position: relative;
+            width: 280px;
+            height: 280px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .pointer {
+            position: absolute;
+            top: -15px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 0;
+            height: 0;
+            border-left: 15px solid transparent;
+            border-right: 15px solid transparent;
+            border-top: 25px solid var(--color-gold);
+            z-index: 10;
+            filter: drop-shadow(0 3px 5px rgba(0, 0, 0, 0.3));
+        }
+
+        canvas#wheelCanvas {
+            width: 100%;
+            height: 100%;
+            filter: drop-shadow(0 10px 30px rgba(0, 0, 0, 0.15));
+        }
+
+        .button-group {
+            display: flex;
+            gap: 15px;
+            flex-wrap: wrap;
+            justify-content: center;
+        }
+
+        .spin-btn {
+            background: linear-gradient(135deg, var(--color-primary), #0f4f5a);
+            color: white;
+            border: none;
+            padding: 15px 40px;
+            font-size: 1.1em;
+            font-weight: bold;
+            border-radius: 30px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 5px 20px rgba(33, 128, 145, 0.3);
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .spin-btn:hover:not(:disabled) {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(33, 128, 145, 0.5);
+        }
+
+        .spin-btn:active:not(:disabled) {
+            transform: translateY(0);
+        }
+
+        .spin-btn:disabled {
+            opacity: 0.6;
+            cursor: not-allowed;
+        }
+
+        .result-box {
+            background: linear-gradient(135deg, #fff9e6, #fffef0);
+            border: 3px solid var(--color-gold);
+            border-radius: 15px;
+            padding: 20px;
+            text-align: center;
+            min-height: 100px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            box-shadow: 0 5px 15px rgba(212, 175, 55, 0.2);
+        }
+
+        .result-label {
+            color: var(--color-primary);
+            font-size: 0.9em;
+            font-weight: bold;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            margin-bottom: 10px;
+        }
+
+        .result-value {
+            color: var(--color-primary);
+            font-size: 1.5em;
+            font-weight: bold;
+            margin-bottom: 8px;
+        }
+
+        .result-sublabel {
+            color: #666;
+            font-size: 0.85em;
+        }
+
+        .instructions {
+            background: #f0f8ff;
+            border-left: 4px solid var(--color-primary);
+            padding: 15px;
+            border-radius: 8px;
+            margin-top: 25px;
+            font-size: 0.9em;
+            color: #333;
+        }
+
+        .instructions h3 {
+            color: var(--color-primary);
+            margin-bottom: 10px;
+            font-size: 1em;
+        }
+
+        .instructions ul {
+            list-style: none;
+            padding-left: 0;
+        }
+
+        .instructions li {
+            padding: 5px 0;
+            padding-left: 20px;
+            position: relative;
+        }
+
+        .instructions li:before {
+            content: "✓";
+            position: absolute;
+            left: 0;
+            color: var(--color-primary);
+            font-weight: bold;
+        }
+
+        .terms {
+            background: #faf5e6;
+            border-radius: 8px;
+            padding: 12px;
+            margin-top: 15px;
+            font-size: 0.8em;
+            color: #666;
+            line-height: 1.5;
+        }
+
+        @media (max-width: 768px) {
+            .container {
+                padding: 25px;
+            }
+
+            .header h1 {
+                font-size: 2em;
+            }
+
+            .wheel-container {
+                width: 380px;
+                height: 380px;
+            }
+
+            .spin-btn {
+                padding: 12px 30px;
+                font-size: 1.2em;
+            }
+        }
+
+        @keyframes pulse {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+        }
+
+        .spin-btn:not(:disabled):hover {
+            animation: pulse 0.6s ease-in-out;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+             <style>
+    .promo-banner {
+        background: linear-gradient(90deg, #fdfbfb 0%, #ebedee 100%); /* 或用你的金色系 */
+        background-image: linear-gradient(to right, #d4af37, #f3e5ab, #d4af37);
+        padding: 20px;
+        border-radius: 12px;
+        text-align: center;
+        margin: 20px 0;
+        color: #133252;
+        box-shadow: 0 4px 12px rgba(212, 175, 55, 0.3);
+    }
+    .promo-banner h2 {
+        margin: 0;
+        font-size: 2.0em;
+        text-transform: uppercase;
+        letter-spacing: 2px;
+    } 
+
+    }
+    .promo-banner p {
+        margin: 5px 0 0;
+        font-size: 0.9em;
+    }
+</style>
+
+<div class="promo-banner">
+    <h2>🐾 Bom Elite Pet Luxury Grooming 🐾</h2>
+<h1>VÒNG QUAY MAY MẮN</h1>
+            <h1 style="font-size: 1.2em; color: #666; margin-top: -5px;">🎉 Grand Opening Special 🎉 </h1>
+    <p>Spin to Win Premium Grooming Services!</p>
+</div>
+
+        <div class="wheel-section">
+            <div class="wheel-container">
+                <div class="pointer"></div>
+                <canvas id="wheelCanvas"></canvas>
+            </div>
+
+            <div class="button-group">
+                <button class="spin-btn" id="spinBtn">🎡 QUAY NGAY | SPIN NOW</button>
+                <button class="spin-btn" id="resetBtn" style="background: #999;">↺ Lại | Reset</button>
+            </div>
+
+            <div class="result-box">
+                <div class="result-label">🎉 KẾT QUẢ | RESULT</div>
+                <div class="result-value" id="resultText">Nhấn nút để quay | Click to spin</div>
+                <div class="result-sublabel" id="resultSubtext"></div>
+            </div>
+
+            <div class="instructions">
+                <h3>📋 CÁCH THAM GIA | HOW TO JOIN</h3>
+                <ul>
+                    <li>Follow Facebook: <a href="https://www.facebook.com/profile.php?id=61585271970572" target="_blank">Bom Elite Pet Luxury Grooming</a></li>
+                    <li>Follow Instagram: @bom_elite_pet</li>
+                    <li>Like 👍 & Share trang page | Like & Share our page</li>
+                    <li>Chụp ảnh tại cửa hàng + #BomElitePet | Take photo + #BomElitePet</li>
+                    <li>Đến cửa hàng quay thưởng | Come to store to spin!</li>
+                </ul>
+            </div>
+
+            <div class="terms">
+                <strong>⚠️ Điều kiện | CONDITIONS:</strong><br>
+                • Mỗi tài khoản/mỗi thú cưng chỉ được quay 1 lần | Each account/pet can spin ONCE only<br>
+                • Phần thưởng ,voucher có hiệu lực sử dụng đến CUỐI THÁNG kể từ ngày quay | Prizes/vouchers valid until END OF MONTH from spin date<br>
+                • Không áp dụng kết hợp với các chương trình khác | Cannot be combined with other promotions<br>
+                • Dịch vụ tắm rửa miễn phí: chỉ áp dụng cho thú cưng dưới 10kg, trên 10kg giảm 50% giá | Free bath service: only for pets under 10kg; over 10kg get 50% OFF<br>
+                • Chi tiết đầy đủ xin hỏi nhân viên tại cửa hàng | Full details available from store staff<br>
+                • ĐỊA CHỈ: 20 Nguyễn Thị Thập, Tân Thuận , HCM ( 20 Nguyễn Thị Thập , Bình Thuận , Q7 cũ ) | Liên hệ |Zalo：📞0965 889 949  | Email: enquiry@bomelitepet.com
+		(*Vietnamese version prevails)
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const prizes = [
+            { name_vi: "Thức ăn vặt 60g-100g ", name_en: "Pet Snack 60-100g", type: "common" },
+            { name_vi: "Thức ăn vặt 60g-100g ", name_en: "Pet Snack 60-100g", type: "common" },
+            { name_vi: "Voucher giảm 30,000 VND / 1 lần tắm ", name_en: "30,000 VND Bath Service Voucher", type: "common" },
+            { name_vi: "Khăn lau thú cưng chuyên dụng.", name_en: "Premium Pet Towel", type: "medium" },
+            { name_vi: "Vòng cổ chó/mèo", name_en: "Pet Collar", type: "medium" },
+            { name_vi: "Vệ sinh tai ", name_en: " Free Ear Cleaning", type: "premium" },
+            { name_vi: "Cắt mài móng ", name_en: "Free Nail Grinding", type: "premium" },
+            { name_vi: "Cạo bàn ", name_en: "Free Pad Scraping", type: "premium" },
+            { name_vi: "Giảm 30% cho dịch vụ Hotel / 1 LẦN gửi ", name_en: "Hotel 30% OFF/1 time check-in", type: "premium" },
+            { name_vi: "⭐ Dịch vụ tắm rửa hoàn chỉnh (bao gồm 11 bước ) ⭐ ", name_en: "⭐ Complete Bath Service (11-Step Full Grooming) ⭐", type: "jackpot" }
+        ];
+
+
+
+        const colors = [
+            "#FFE4B5", "#FFD700", "#FFF8DC", "#FFFACD", "#E6F3FF", "#E6F3FF", "#E6F3FF", "#E6F3FF", "#E6F3FF", "#FFDAB9"
+        ];
+
+        const darkColors = [
+            "#218091", "#0f4f5a", "#218091", "#0f4f5a", "#218091", "#0f4f5a", "#218091", "#0f4f5a", "#0f4f5a", "#d4af37"
+        ];
+
+        let canvas = document.getElementById("wheelCanvas");
+        let ctx = canvas.getContext("2d");
+        let spinBtn = document.getElementById("spinBtn");
+        let resetBtn = document.getElementById("resetBtn");
+        let resultText = document.getElementById("resultText");
+        let resultSubtext = document.getElementById("resultSubtext");
+
+        let wheelSpinning = false;
+        let wheelRotation = 0;
+        let spinArcStart = 0;
+        let spinTime = 0;
+        let spinTimeTotal = 0;
+        let selectedPrizeIndex = -1;
+	let spinTargetAngle = 0;
+
+        canvas.width = 400;
+        canvas.height = 400;
+
+        function drawWheel() {
+            let numSegments = prizes.length;
+            let segmentAngle = 360 / numSegments;
+
+            for (let i = 0; i < numSegments; i++) {
+                let startAngle = (i * segmentAngle - 90) * Math.PI / 180;
+                let endAngle = ((i + 1) * segmentAngle - 90) * Math.PI / 180;
+
+                ctx.beginPath();
+                ctx.moveTo(200, 200);
+                ctx.arc(200, 200, 180, startAngle, endAngle);
+                ctx.closePath();
+                ctx.fillStyle = colors[i];
+                ctx.fill();
+                ctx.strokeStyle = darkColors[i];
+                ctx.lineWidth = 3;
+                ctx.stroke();
+
+                // Draw text - CENTERED in each segment (Vietnamese 0px, English 0px)
+                ctx.save();
+                ctx.translate(200, 200);
+                ctx.rotate((startAngle + endAngle) / 2);
+                ctx.textAlign = "center";
+                ctx.textBaseline = "middle";
+                ctx.fillStyle = darkColors[i];
+                ctx.font = "bold 0px uppercase";
+                
+                let textRadius = 115;
+                let textX = textRadius;
+                ctx.fillText(prizes[i].name_vi.substring(0, 22), textX, 0);
+                ctx.restore();
+            }
+        }
+
+        function rotateWheel(angle) {
+            ctx.clearRect(0, 0, 400, 400);
+            ctx.save();
+            ctx.translate(200, 200);
+            ctx.rotate((angle % 360) * Math.PI / 180);
+            ctx.translate(-200, -200);
+            drawWheel();
+            ctx.restore();
+        }
+
+        function getWeightedPrizeIndex() {
+            // Updated prize weights:
+            // 0-1: Pet Snack (40% = 0.20 each)
+            // 2: Bath Voucher 30k (15%)
+            // 3: Pet Towel (7%)
+            // 4: Pet Collar (8%)
+            // 5-7: Free Services (25% = ~8.3% each)
+            // 8: Hotel 30% (5%)
+            // 9: Free Bath 11-step (5%)
+            
+            const weights = [0.20, 0.20, 0.15, 0.07, 0.08, 0.08, 0.08, 0.09, 0.05, 0.05];
+            const random = Math.random();
+            let cumulative = 0;
+            
+            for (let i = 0; i < weights.length; i++) {
+                cumulative += weights[i];
+                if (random <= cumulative) {
+                    return i;
+                }
+            }
+            return 9;
+        }
+
+function spinWheel() {
+    if (wheelSpinning) return;
+    wheelSpinning = true;
+    spinBtn.disabled = true;
+    spinBtn.textContent = "⏳ Đang quay... | Spinning...";
+
+    // Get weighted random prize before spinning starts
+    selectedPrizeIndex = getWeightedPrizeIndex();
+
+    spinTime = 0;
+    spinTimeTotal = 3000;  // 3 seconds for 10+ spins
+    
+    // 計算指針要停的位置（指針在上方，對應格9）
+    let segmentAngle = 360 / prizes.length;  // 36 degrees per segment
+    let targetDegree = 90 - (selectedPrizeIndex * segmentAngle);
+    while (targetDegree < 0) targetDegree += 360;
+    
+    spinArcStart = Math.random() * 360;
+    spinTargetAngle = spinArcStart + 3600 + targetDegree;  // 10 full rotations + target
+    
+    wheelRotation = 0;
+    resultText.textContent = "🎲 Đang quay... | Spinning...";
+    resultSubtext.textContent = "";
+
+    rotateWheel(spinArcStart);
+    spinAnimation();
+}
+function spinAnimation() {
+    spinTime += 16;  // Smooth 60fps animation
+
+    if (spinTime >= spinTimeTotal) {
+        stopAnimation();
+        return;
+    }
+
+    let progress = spinTime / spinTimeTotal;
+    let easeProgress = progress * progress;  // Deceleration effect
+    let spinAngle = spinArcStart + (spinTargetAngle - spinArcStart) * easeProgress;
+    wheelRotation = spinAngle % 360;
+    rotateWheel(wheelRotation);
+    setTimeout(spinAnimation, 16);
+}
+        function stopAnimation() {
+            wheelSpinning = false;
+            spinBtn.disabled = false;
+            spinBtn.textContent = "🎡 QUAY NGAY | SPIN NOW";
+
+            // Use pre-selected prize
+            let index = selectedPrizeIndex;
+
+            resultText.innerHTML = `<span style="font-size: 1.2em; color: #d4af37;">🎉 YÊU!</span><br>${prizes[index].name_vi}<br>${prizes[index].name_en}`;
+            resultSubtext.innerHTML = `<small>Xin chúc mừng! | Congratulations!</small>`;
+
+            setTimeout(() => {
+                resultText.style.animation = "none";
+                resultText.offsetHeight;
+                resultText.style.animation = "pulse 0.6s ease-in-out";
+            }, 10);
+        }
+
+        resetBtn.addEventListener("click", () => {
+            wheelRotation = 0;
+            wheelSpinning = false;
+            spinBtn.disabled = false;
+            spinBtn.textContent = "🎡 QUAY NGAY | SPIN NOW";
+            resultText.textContent = "Nhấn nút để quay | Click to spin";
+            resultSubtext.textContent = "";
+            rotateWheel(0);
+        });
+
+        spinBtn.addEventListener("click", spinWheel);
+
+        drawWheel();
+    </script>
+</body>
+</html>
