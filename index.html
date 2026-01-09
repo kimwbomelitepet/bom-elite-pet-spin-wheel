@@ -75,8 +75,8 @@
 
         .wheel-container {
             position: relative;
-            width: 280px;
-            height: 280px;
+            width: 320px;
+            height: 320px;
             display: flex;
             align-items: center;
             justify-content: center;
@@ -387,7 +387,7 @@
                 ctx.fillStyle = darkColors[i];
                 ctx.font = "bold 13px Arial";
                 
-                let textRadius = 0;
+                let textRadius = 180;
                 let textX = textRadius;
                 // Shorten text for wheel display
                 let displayText = prizes[i].name_vi.length > 14 ? prizes[i].name_vi.substring(0, 14) : prizes[i].name_vi;
