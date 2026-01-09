@@ -485,7 +485,7 @@
             // 使用計算出的獎品索引（確保與指針對齐）
             let index = pointerIndex;
 
-            resultText.innerHTML = `<span style="font-size: 1.2em; color: #d4af37;">🎉 YÊU!</span>;
+            resultText.innerHTML = `<span style="font-size: 1.2em; color: #d4af37;">🎉 YÊU!</span><br>${prizes[index].name_vi}<br><small>${prizes[index].name_en}</small>`;
             resultSubtext.innerHTML = `<small>Xin chúc mừng! | Congratulations!</small>`;
 
             setTimeout(() => {
